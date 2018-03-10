@@ -18,29 +18,36 @@ class App extends Component {
       user: ''
     }
     this.editHandler = this.editHandler.bind(this);
+    this.addHandler = this.addHandler.bind(this);
     this.togglePopup = this.togglePopup.bind(this);
 
   } 
 
-  editHandler(id) {
+  editHandler(user) {
+    this.setState({
+      showPopup: !this.state.showPopup,
+      editMode: true,
+      user: user
+    });    
+  }
+
+  addHandler(user) {
     this.togglePopup();
-    this.props.editNote(id);
+    this.props.addNote(user);
+    this.props.incrementID();
   }
  
 
-  deleteHandler() {
-
-  }
-
-  togglePopup(user, editMode = false) {
+  togglePopup(user) {
     this.setState({
       showPopup: !this.state.showPopup,
-      editMode: editMode,
+      editMode: false ,
       user: user
     });
   }
 
   render() {
+    console.log(this.props.id);
     return (
       <div className="app">
         <NavBar 
@@ -48,19 +55,21 @@ class App extends Component {
 
         <MainTable 
           notes={this.props.notes}
-          editNote={this.togglePopup} 
+          editHandler={this.editHandler} 
           close={this.togglePopup}
           deleteNote={this.props.deleteNote}/>
 
 
         {/* Open/Cloase Popup */}
         {this.state.showPopup ? 
-          <Popup 
+          <Popup             
             id={this.props.notes.length}
-            user={ (this.state.editMode) ? this.state.user : null}
-            text='Title' 
-            addNote={this.props.addNote}
-            close={this.togglePopup}/> : null}
+            user={this.state.user}
+            addNote={this.addHandler}
+            editNote={this.props.editNote}
+            close={this.togglePopup}
+            editMode={this.state.editMode}
+          /> : null}
         {/* Open/Cloase Popup */}
       </div>
     );
@@ -68,9 +77,10 @@ class App extends Component {
 }
 
 
-function mapStateToProps({notes}) {
+function mapStateToProps({notes, id}) {
   return {
-    notes: notes
+    notes: notes,
+    id: id
   }
 }
 

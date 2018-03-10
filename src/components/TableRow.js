@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
+import deleteButton from '../delete.png';
+import editButton from '../edit.png';
+
 
 class TableRow extends Component {
   render() {
-    console.log(this.props.user);
+    console.log("user", this.props.user);
     return (
       <tr>
           <td>{this.props.user.name}</td>
           <td>{this.props.user.surname}</td>
-          <td>{this.props.user.date}</td>
-          <td><button onClick={() => this.props.editNote(this.props.user, true)}>Edit</button></td>
-          <td><button onClick={() => this.props.deleteNote(this.props.user.id)}>Delete</button></td>
+          <td>{this.props.user.date._d.toLocaleDateString()}</td>
+          <td><img 
+            src={editButton} 
+            className="img-button"
+            onClick={() => this.props.editHandler(this.props.user)}/></td>
+          <td><img 
+            src={deleteButton} 
+            className="img-button"            
+            onClick={() => this.props.deleteNote(this.props.user.id)}/></td>
       </tr>
     )
   }

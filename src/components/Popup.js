@@ -3,8 +3,7 @@ import { Button, FormGroup , ControlLabel , FormControl } from 'react-bootstrap'
 import  DatePicker from "react-datepicker";
 import moment from 'moment';
 
-import { connect } from 'react-redux';
-import * as actions from '../actions';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 class Popup extends React.Component {
@@ -12,34 +11,55 @@ class Popup extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-          startDate: moment(),
-          showPopup: false  ,
           name: '',
-          surname: ''
+          surname: '',
+          startDate: moment()
         }
         this.submitHandler = this.submitHandler.bind(this);
-        
     } 
+  
+
+    componentWillMount(){
+        if(this.props.editMode) {
+            console.log("Edti mode", this.props.user);
+            var user = this.props.user;
+            this.setState({
+                name: user.name,
+                surname: user.surname,
+                startDate: user.date
+            });
+        }
+    }
 
     submitHandler(e) {
         e.preventDefault();
         if(this.state.name.length > 1) {
-            this.props.addNote({
-                id: this.props.id,
-                name: this.state.name,
-                surname: this.state.surname,
-                date: this.state.startDate._d.toLocaleDateString()
-            });
-            this.props.close(); 
+            if(this.props.editMode) {
+                this.props.editNote({
+                    id: this.props.user.id,
+                    name: this.state.name,
+                    surname: this.state.surname,
+                    date: this.state.startDate
+                });
+                this.props.close();
+            } else {
+                this.props.addNote({
+                    id: this.props.id,
+                    name: this.state.name,
+                    surname: this.state.surname,
+                    date: this.state.startDate
+                });
+            }
+            this.props.close();
         } else {
             alert("Name cannot be null");
-        }       
+        }      
+        
+        
     }
 
     handleChangeDate(date) {
-        this.setState({
-            startDate: date
-        });        
+        this.setState({ startDate: date });        
     }
     handleChangeName(e) {
         this.setState({ name: e.target.value });
@@ -51,7 +71,6 @@ class Popup extends React.Component {
 
 
     render() {
-
         return (
         <div className='popup'>
             <div className='popup_inner'>
@@ -65,7 +84,7 @@ class Popup extends React.Component {
                     <ControlLabel>Your name</ControlLabel>
                     <FormControl
                     type="text"
-                    value={this.state.name}
+                    value={this.state.name || ''} 
                     placeholder="Enter name"
                     onChange={this.handleChangeName.bind(this)}
                     />
@@ -73,7 +92,7 @@ class Popup extends React.Component {
                     <ControlLabel>Your surname</ControlLabel>
                     <FormControl
                     type="text"
-                    value={this.state.surname}
+                    value={this.state.surname || ''}
                     placeholder="Enter surname"
                     onChange={this.handleChangeSurname.bind(this)}
                     /> 
@@ -81,7 +100,7 @@ class Popup extends React.Component {
 
                     <DatePicker
                     dateFormat="YYYY/MM/DD"
-                    selected={this.state.startDate}
+                    selected={this.state.startDate }
                     onChange={this.handleChangeDate.bind(this)} 
                     />
                 </FormGroup>
@@ -96,3 +115,4 @@ class Popup extends React.Component {
 }
 
 export default Popup;
+

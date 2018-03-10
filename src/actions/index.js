@@ -1,16 +1,19 @@
-import { ADD_NOTE, DELETE_NOTE, EDIT_NOTE } from './types';
+import { ADD_NOTE, DELETE_NOTE, EDIT_NOTE, INCREMENT_ID } from './types';
 
 export const addNote = (newNote) => dispatch => {
-    console.log("addnote action", newNote);
+    console.log("AC type");
     dispatch({ type: ADD_NOTE, payload: newNote });
 };    
 
 export const deleteNote = (noteID) => dispatch => {
-    console.log("delete action", noteID);
     dispatch({ type: DELETE_NOTE, payload: noteID });
 };
 
 export const editNote = (note) => dispatch => {
-    console.log("edit action", note);
     dispatch({ type: EDIT_NOTE, payload: note });
+};
+
+export const incrementID = () => dispatch => {
+    console.log("AC type");
+    dispatch({ type: INCREMENT_ID });
 };
