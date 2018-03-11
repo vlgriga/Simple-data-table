@@ -1,7 +1,6 @@
 import { ADD_NOTE, DELETE_NOTE, EDIT_NOTE, INCREMENT_ID } from './types';
 
 export const addNote = (newNote) => dispatch => {
-    console.log("AC type");
     dispatch({ type: ADD_NOTE, payload: newNote });
 };    
 

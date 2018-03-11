@@ -47,7 +47,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.id);
     return (
       <div className="app">
         <NavBar 
@@ -63,7 +62,7 @@ class App extends Component {
         {/* Open/Cloase Popup */}
         {this.state.showPopup ? 
           <Popup             
-            id={this.props.notes.length}
+            id={this.props.id}
             user={this.state.user}
             addNote={this.addHandler}
             editNote={this.props.editNote}
