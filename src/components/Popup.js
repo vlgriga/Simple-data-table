@@ -59,7 +59,13 @@ class Popup extends React.Component {
     }
 
     handleChangeDate(date) {
-        this.setState({ startDate: date });        
+        if(date > moment() ) {
+            alert("Date of birthday cannot be less than " + moment()._d.toLocaleDateString());
+            this.setState({ startDate: moment() });   
+
+        } else {
+            this.setState({ startDate: date });   
+        }     
     }
     handleChangeName(e) {
         this.setState({ name: e.target.value });
